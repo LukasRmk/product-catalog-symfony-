@@ -3,8 +3,13 @@
 {% block title %}Prekių katalogas{% endblock %}
 
 {% block body %}
+
    {% if is_granted('ROLE_ADMIN') %}
         <h1>Prekių sąrašas:</h1>
+        <div id="btnContainer">
+            <button class="btn" onclick="listView()"><i class="fa fa-bars"></i> List</button> 
+            <button class="btn active" onclick="gridView()"><i class="fa fa-th-large"></i> Grid</button>
+        </div>
         <a href="{{ path('app_prekePrideti') }}" class="btn btn-primary my-1 float-right">Pridėti prekę</a>
 
         <table class="table">
@@ -33,6 +38,10 @@
 
     {% if is_granted('ROLE_KLIENTAS') %}
         <h1>Prekių sąrašas:</h1>
+        <div id="btnContainer">
+             <button class="btn" onclick="listView()"><i class="fa fa-bars"></i> List</button> 
+            <button class="btn active" onclick="gridView()"><i class="fa fa-th-large"></i> Grid</button>
+        </div>
         <table class="table">
         <tr>
                 <th>Paveikslėlis</th>

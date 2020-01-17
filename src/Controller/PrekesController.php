@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 use App\Entity\Preke;
+use App\Entity\configuration;
 use App\Form\PrekesRedaguotiFormType;
 use App\Form\PrekesFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -102,14 +103,17 @@ class PrekesController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $preke = $this->getDoctrine()->getRepository(Preke::class)->find($prekesId);
+        $config = $this->getDoctrine()->getRepository(configuration::class)->find(0);
 
         $entityManager = $this->getDoctrine()->getManager();
         $conn = $this->getDoctrine()->getManager()->getConnection();
 
+
+
         return $this->render('prekes/profilis.html.twig', [
             'prekee' => $preke,
+            'conf' => $config,
         ]);
     }
-
    
 }

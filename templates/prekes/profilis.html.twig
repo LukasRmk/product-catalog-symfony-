@@ -26,7 +26,11 @@
         </tr>
         <tr>
             <th>Kaina</th>
-            <td>{{ prekee.base_price }}</td>
+            <td>Kaina be PVM + PVM = Mokėtina suma </td>
+        </tr>
+        <tr>
+            <th></th>
+            <td>{{ prekee.base_price - conf.tax_rate * prekee.base_price / 100}} + {{ conf.tax_rate * prekee.base_price / 100}} = {{ prekee.base_price }}€</td>
         </tr>
         <tr>
             <th>Aprašymas</th>
