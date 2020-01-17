@@ -33,7 +33,7 @@ class PrekesController extends AbstractController
              $entityManager->persist($preke);
              $entityManager->flush();
              $this->addFlash('success', 'Prekė pridėta');
-             return $this->redirectToRoute('app_preke');
+             return $this->redirectToRoute('app_prekes');
         }
         return $this->render('prekes/forma.html.twig', [
             'purpose' => 'Pridėti',
@@ -47,14 +47,11 @@ class PrekesController extends AbstractController
     public function edit($prekesID, Request $request)
     {
             $this->denyAccessUnlessGranted('ROLE_ADMIN');
-            $preke = $this->getDoctrine()
-                ->getRepository(Preke::class)
-                ->find($prekesID);
-    
+
+            $preke = $this->getDoctrine()->getRepository(Preke::class)->find($prekesID);
             $form = $this->createForm(PrekesRedaguotiFormType::class, $preke);
             $form->handleRequest($request);
-    
-    
+
             if ($form->isSubmitted() && $form->isValid())
                     {
                         $preke = $form->getData();
@@ -64,7 +61,7 @@ class PrekesController extends AbstractController
                         $entityManager->flush();
     
                         $this->addFlash('success', 'Prekė paredaguota');
-                        return $this->redirectToRoute('app_prekesPlaciau', ['prekesID' => $prekesID]);
+                        return $this->redirectToRoute('app_prekesPlaciau', ['prekesId' => $prekesID]);
                     }
     
                     return $this->render('prekes/forma.html.twig', [

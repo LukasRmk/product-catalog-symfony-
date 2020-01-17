@@ -16,13 +16,13 @@ class PrekesRedaguotiFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        ->add('pavadinimas', [
+        ->add('pavadinimas', TextType::class,[
             'label' => 'Pavadinimas'
         ])
         ->add('SKU', TextType::class, [
             'label' => 'SKU'
         ])
-        ->add('status', [
+        ->add('status', TextType::class, [
             'label' => 'Likučio statusas'
         ])
         ->add('base_price',  NumberType::class, [
@@ -33,10 +33,10 @@ class PrekesRedaguotiFormType extends AbstractType
             'invalid_message' => 'Kaina nurodoma skaiciais',
             'label' => 'Speciali kaina'
         ])
-        ->add('image', [
+        ->add('image', TextType::class, [
             'label' => 'Turi būti nurodomas URL adresas',
         ])
-        ->add('description', [
+        ->add('description', TextType::class, [
             'label' => 'Aprašymas',
         ])
         ;

@@ -41,7 +41,7 @@ class Preke
      /**
      * @ORM\Column(type="float")
      */
-    private $special_price;
+    public $special_price;
 
      /**
      * @ORM\Column(type="string", length=255)
@@ -51,7 +51,7 @@ class Preke
      /**
      * @ORM\Column(type="string", length=255)
      */
-    private $description;
+    public $description;
 
 
 
