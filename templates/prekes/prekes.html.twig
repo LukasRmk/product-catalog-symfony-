@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Prekių katalogas{% endblock %}
+
+{% block body %}
+   {% if is_granted('ROLE_ADMIN') %}
+        <h1>Prekių sąrašas:</h1>
+        <a href="{{ path('app_prekePrideti') }}" class="btn btn-primary my-1 float-right">Pridėti prekę</a>
+
+        <table class="table">
+            <tr>
+                <th>Paveikslėlis</th>
+                <th>Pavadinimas</th>
+                <th>Kaina</th>
+                <th>Veiksmai</th>
+            </tr>
+            <tr>
+                {% for preke in prekes %}
+            <tr>
+                <td><img src="{{ preke.image }}" width="150" height="150"></td>
+                <td>{{ preke.pavadinimas }}</td>
+                <td>{{ preke.base_price }}€</td>
+                <td>
+                    <a href="{{ path('app_prekesPlaciau', {'prekesId':preke.id}) }}" class="btn btn-success">Plačiau</a>
+                    <a href="{{ path('app_prekeRedaguoti', {'prekesID':preke.id}) }}" class="btn btn-primary my-1 ">Redaguoti</a>
+                    <a href="{{ path('app_prekesIstrinti', {'prekesID':preke.id}) }}" class="btn btn-danger js-delete-btn">Ištrinti</a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tr>
+        </table>
+    {% endif %}
+
+    {% if is_granted('ROLE_KLIENTAS') %}
+        <h1>Prekių sąrašas:</h1>
+        <table class="table">
+        <tr>
+                <th>Paveikslėlis</th>
+                <th>Pavadinimas</th>
+                <th>Kaina</th>
+                <th>Veiksmai</th>
+            </tr>
+            <tr>
+                {% for preke in prekes %}
+            <tr>
+                <td><img src="{{ preke.image }}" width="150" height="150"></td>
+                <td>{{ preke.pavadinimas }}</td>
+                <td>{{ preke.base_price }}€</td>
+                <td>
+                   <a href="{{ path('app_prekesPlaciau', {'prekesId':preke.id}) }}" class="btn btn-success">Plačiau</a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tr>
+        </table>
+    {% endif %}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+            $('.js-delete-btn').on('click', function () {
+                return confirm('Ar tikrai norite ištrinti prekę?');
+            });
+        });
+    </script>
+{% endblock %}

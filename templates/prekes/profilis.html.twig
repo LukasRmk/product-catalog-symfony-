@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Plačiau apie prekę{% endblock %}
+
+{% block body %}
+    <h1>Plačiau apie prekę</h1>
+{% if is_granted('ROLE_ADMIN') %}
+    <a href="{{ path('app_prekeRedaguoti', {'prekesID':prekee.id}) }}" class="btn btn-primary">Redaguoti</a>
+{% endif %}
+<table class="table" style="width:30%">
+        <tr>
+            <th></th>
+            <td><img src="{{ prekee.image }}"></td>
+        </tr>
+        <tr>
+            <th>Pavadinimas</th>
+            <td>{{ prekee.pavadinimas }}</td>
+        </tr>
+        <tr>
+            <th>SKU</th>
+            <td>{{ prekee.SKU }}</td>
+        </tr>
+        <tr>
+            <th>Likučio statusas</th>
+            <td>{{ prekee.status }}</td>
+        </tr>
+        <tr>
+            <th>Kaina</th>
+            <td>{{ prekee.base_price }}</td>
+        </tr>
+        <tr>
+            <th>Aprašymas</th>
+            <td>{{ prekee.desc }}</td>
+        </tr>
+       
+    </table>
+
+{% endblock %}
