@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\configuration;
+use App\Entity\configur;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -32,7 +32,7 @@ class configFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => configuration::class,
+            'data_class' => configur::class,
         ]);
     }
 }

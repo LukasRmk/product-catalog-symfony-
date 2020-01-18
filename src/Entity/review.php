@@ -67,7 +67,7 @@ class review
         return $this->rate;
     }
 
-    public function setRate(string $rate): self
+    public function setRate(int $rate): self
     {
         $this->rate = $rate;
 

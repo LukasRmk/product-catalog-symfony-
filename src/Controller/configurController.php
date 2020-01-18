@@ -7,9 +7,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\configFormType;
-use App\Entity\configuration;
+use App\Entity\configur;
 
-class configurationController extends AbstractController
+class configurController extends AbstractController
 {
     /**
      * @Route("/config", name="app_config")
@@ -17,7 +17,7 @@ class configurationController extends AbstractController
     public function index(Request $request)
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        $config = $this->getDoctrine()->getRepository(configuration::class)->find(0);
+        $config = $this->getDoctrine()->getRepository(configur::class)->find(0);
         $form = $this->createForm(configFormType::class, $config);
         $form->handleRequest($request);
 
@@ -33,7 +33,7 @@ class configurationController extends AbstractController
                     return $this->redirectToRoute('app_config');
                 }
 
-                return $this->render('configuration/config.html.twig', [
+                return $this->render('configur/config.html.twig', [
                     'purpose' => 'Redaguoti',
                     'object' => 'konfiguracija',
                     'form' => $form->createView(),

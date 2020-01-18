@@ -2,7 +2,7 @@
 namespace App\Controller;
 use App\Entity\Preke;
 use App\Entity\review;
-use App\Entity\configuration;
+use App\Entity\configur;
 use App\Form\PrekesRedaguotiFormType;
 use App\Form\PrekesFormType;
 use App\Form\reviewFormType;
@@ -17,7 +17,7 @@ class PrekesController extends AbstractController
     public function index()
     {
         $prekes = $this->getDoctrine()->getRepository(Preke::class)->findAll();
-        $config = $this->getDoctrine()->getRepository(configuration::class)->find(0);
+        $config = $this->getDoctrine()->getRepository(configur::class)->find(0);
 
         return $this->render('prekes/prekes.html.twig', [
         'prekes' => $prekes,
@@ -31,7 +31,7 @@ class PrekesController extends AbstractController
     public function index1()
     {
         $prekes = $this->getDoctrine()->getRepository(Preke::class)->findAllOrderedByPrice();
-        $config = $this->getDoctrine()->getRepository(configuration::class)->find(0);
+        $config = $this->getDoctrine()->getRepository(configur::class)->find(0);
 
         return $this->render('prekes/prekes.html.twig', [
         'prekes' => $prekes,
@@ -45,7 +45,7 @@ class PrekesController extends AbstractController
     public function index2()
     {
         $prekes = $this->getDoctrine()->getRepository(Preke::class)->findAllOrderedByPriceDesc();
-        $config = $this->getDoctrine()->getRepository(configuration::class)->find(0);
+        $config = $this->getDoctrine()->getRepository(configur::class)->find(0);
 
         return $this->render('prekes/prekes.html.twig', [
         'prekes' => $prekes,
@@ -138,7 +138,7 @@ class PrekesController extends AbstractController
 
         $preke = $this->getDoctrine()->getRepository(Preke::class)->find($prekesId);
         $review = $this->getDoctrine()->getRepository(review::class)->findReview($prekesId);
-        $config = $this->getDoctrine()->getRepository(configuration::class)->find(0);
+        $config = $this->getDoctrine()->getRepository(configur::class)->find(0);
 
         $entityManager = $this->getDoctrine()->getManager();
         $conn = $this->getDoctrine()->getManager()->getConnection();
