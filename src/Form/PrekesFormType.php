@@ -17,27 +17,27 @@ class PrekesFormType extends AbstractType
     {
         $builder
             ->add('pavadinimas', TextType::class,[
-                'label' => 'Pavadinimas'
+                'label' => 'Pavadinimas '
             ])
             ->add('SKU', TextType::class, [
-                'label' => 'SKU'
+                'label' => 'SKU '
             ])
             ->add('status', TextType::class,[
-                'label' => 'Likučio statusas'
+                'label' => 'Likučio statusas '
             ])
             ->add('base_price',  NumberType::class, [
                 'invalid_message' => 'Kaina nurodoma skaiciais',
-                'label' => 'Paprasta kaina'
+                'label' => 'Paprasta kaina '
             ])
             ->add('special_price',  NumberType::class, [
                 'invalid_message' => 'Kaina nurodoma skaiciais',
-                'label' => 'Speciali kaina'
+                'label' => 'Speciali kaina (jei nėra nurodyti 0) '
             ])
             ->add('image', TextType::class,[
-                'label' => 'Turi būti nurodomas URL adresas',
+                'label' => 'Piešinuko URL adresas ',
             ])
             ->add('description', TextType::class,[
-                'label' => 'Aprašymas',
+                'label' => 'Aprašymas ',
             ])
         ;
     }

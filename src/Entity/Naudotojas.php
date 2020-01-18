@@ -113,22 +113,5 @@ class Naudotojas implements UserInterface
         // $this->plainPassword = null;
     }
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Klientas", mappedBy="naudotojas_id")
-     */
-    private $klientai;
-
-
-    public function __construct()
-    {
-        $this->klientai = new ArrayCollection();
-    }
-
-    /**
-     * @return Collection|Klientas[]
-     */
-    public function getKlientai(): Collection
-    {
-        return $this->klientai;
-    }
+  
 }
