@@ -12,7 +12,7 @@ class configurFixtures extends Fixture
     {
         $config = new configur();
         $config->setTaxRate(21);
-        $config->setTaxFlag(1);
+        $config->setTaxFlag(true);
         $config->setGlobalDiscount(0);
         
         $manager->persist($config);

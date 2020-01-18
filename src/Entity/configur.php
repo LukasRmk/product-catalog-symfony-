@@ -52,12 +52,12 @@ class configur
         return $this;
     }
 
-    public function getTaxFlag(): ?int
+    public function getTaxFlag(): ?bool
     {
         return $this->tax_flag;
     }
 
-    public function setTaxFlag(int $tax_flag): self
+    public function setTaxFlag(bool $tax_flag): self
     {
         $this->tax_flag = $tax_flag;
 
