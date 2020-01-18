@@ -7,10 +7,11 @@
 {% if is_granted('ROLE_ADMIN') %}
     <a href="{{ path('app_prekeRedaguoti', {'prekesID':prekee.id}) }}" class="btn btn-primary">Redaguoti</a>
 {% endif %}
-<table class="table" style="width:30%">
+
+<table class="table" style="width:80%">
         <tr>
             <th></th>
-            <td><img src="{{ prekee.image }}"></td>
+            <td><img src="{{ prekee.image }}" width="300" height="350"></td>
         </tr>
         <tr>
             <th>Pavadinimas</th>
@@ -26,11 +27,65 @@
         </tr>
         <tr>
             <th>Kaina</th>
-            <td>Kaina be PVM + PVM = Mokėtina suma </td>
+            {% if conf.tax_flag == 1 %}
+                    {% if conf.global_discount == 0 %}
+
+                        <td > Prekės kaina + mokesčiai({{conf.tax_rate}}%) = Mokėtina suma </td>
+
+                    {% endif %}
+
+                    {% if conf.global_discount != 0 %}
+                        <td> Prekės kaina + mokesčiai({{conf.tax_rate}}%) - išpardavimo nuolaida({{ conf.global_discount}}%) = Mokėtina suma </td>
+                    {% endif %}
+                {% endif %}
+
+            {% if conf.tax_flag == 0 %}
+                    {% if conf.global_discount == 0 %}
+                        <td> Prekės kaina + mokesčiai({{conf.tax_rate}}%) = Mokėtina suma </td>
+                    {% endif %}
+
+                    {% if conf.global_discount != 0 %}
+                        <td> Prekės kaina + mokesčiai({{conf.tax_rate}}%) - išpardavimo nuolaida({{ conf.global_discount}}%) = Mokėtina suma </td>
+                    {% endif %}
+            {% endif %}
         </tr>
         <tr>
             <th></th>
-            <td>{{ prekee.base_price - conf.tax_rate * prekee.base_price / 100}} + {{ conf.tax_rate * prekee.base_price / 100}} = {{ prekee.base_price }}€</td>
+             {% if conf.tax_flag == 1 %}
+                    {% if conf.global_discount == 0 %}
+                        {% if prekee.special_price != 0 %}
+                            <td >{{ prekee.special_price}} + {{ conf.tax_rate * prekee.special_price / 100 }} = {{ prekee.special_price + conf.tax_rate * prekee.special_price / 100}}€</td>
+                        {% else %}
+                            <td >{{ prekee.base_price}} + {{ conf.tax_rate * prekee.base_price / 100 }} = {{ prekee.base_price + conf.tax_rate * prekee.base_price / 100}}€</td>
+                        {% endif %}
+                    {% endif %}
+
+                    {% if conf.global_discount != 0 %}
+                        {% if prekee.special_price != 0 %}
+                            <td>{{ prekee.special_price}} + {{ conf.tax_rate * prekee.special_price / 100 }} - {{(prekee.special_price + conf.tax_rate * prekee.special_price / 100) * conf.global_discount / 100}} = {{ (prekee.special_price + conf.tax_rate * prekee.special_price / 100) - ((prekee.special_price + conf.tax_rate * prekee.special_price / 100) * conf.global_discount / 100)}}€</td>
+                        {% else %}
+                            <td>{{ prekee.base_price}} + {{ conf.tax_rate * prekee.base_price / 100 }} - {{(prekee.base_price + conf.tax_rate * prekee.base_price / 100) * conf.global_discount / 100}} = {{ (prekee.base_price + conf.tax_rate * prekee.base_price / 100) - ((prekee.base_price + conf.tax_rate * prekee.base_price / 100) * conf.global_discount / 100)}}€</td>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+
+                {% if conf.tax_flag == 0 %}
+                    {% if conf.global_discount == 0 %}
+                        {% if prekee.special_price != 0 %}
+                            <td>{{ prekee.special_price}} + {{ conf.tax_rate * prekee.special_price / 100 }} = {{ prekee.special_price + conf.tax_rate * prekee.special_price / 100}}€</td>
+                        {% else %}
+                            <td>{{ prekee.base_price}} + {{ conf.tax_rate * prekee.base_price / 100 }} = {{ prekee.base_price + conf.tax_rate * prekee.base_price / 100}}€</td>
+                        {% endif %}
+                    {% endif %}
+
+                    {% if conf.global_discount != 0 %}
+                        {% if prekee.special_price != 0 %}
+                            <td>{{ prekee.special_price}} + {{ conf.tax_rate * prekee.special_price / 100 }} - {{(prekee.special_price + conf.tax_rate * prekee.special_price / 100) * conf.global_discount / 100}} = {{ (prekee.special_price + conf.tax_rate * prekee.special_price / 100) - ((prekee.special_price + conf.tax_rate * prekee.special_price / 100) * conf.global_discount / 100)}}€</td>
+                        {% else %}
+                            <td>{{ prekee.base_price}} + {{ conf.tax_rate * prekee.base_price / 100 }} - {{(prekee.base_price + conf.tax_rate * prekee.base_price / 100) * conf.global_discount / 100}} = {{ (prekee.base_price + conf.tax_rate * prekee.base_price / 100) - ((prekee.base_price + conf.tax_rate * prekee.base_price / 100) * conf.global_discount / 100)}}€</td>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
         </tr>
         <tr>
             <th>Aprašymas</th>
@@ -38,5 +93,22 @@
         </tr>
        
     </table>
+    <br>
+    <h5>Atsiliepimai</h5>
+    <table class="table">
+    <tr>
+        <th>Komentaras</th>
+        <th>Įvertinimas</th>
+    </tr>
+        <tr>
+            {% for review in reviews %}
+             <tr>
+                <td>{{ review.text }}</td>
+                <td>{{ review.rate }}/5</td>
+             </tr>
+            {% endfor %}
+        </tr>
+    </table>
+    <a href="{{ path('app_atsiliepimas', {'prekesID':prekee.id}) }}" class="btn btn-primary">Palikti atsiliepimą</a>
 
 {% endblock %}

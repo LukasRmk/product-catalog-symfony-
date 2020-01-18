@@ -16,7 +16,12 @@
             <tr>
                 <th>Paveikslėlis</th>
                 <th>Pavadinimas</th>
-                <th>Kaina</th>
+                {% if conf.global_discount != 0 %}
+                    <th>Sena kaina</th>
+                    <th>Išpardavimo kaina</th>
+                {% else %}    
+                    <th>Kaina</th>
+                {% endif %}
                 <th>Veiksmai</th>
             </tr>
             <tr>
@@ -24,7 +29,48 @@
             <tr>
                 <td><img src="{{ preke.image }}" width="150" height="150"></td>
                 <td>{{ preke.pavadinimas }}</td>
-                <td>{{ preke.base_price }}€</td>
+
+
+                {% if conf.tax_flag == 1 %}
+                    {% if conf.global_discount == 0 %}
+                        {% if preke.special_price != 0 %}
+                            <td ><p style="text-decoration: line-through"> {{ preke.base_price + conf.tax_rate * preke.base_price / 100 }}€ </p>{{ preke.special_price + conf.tax_rate * preke.special_price / 100}}€</td>
+                        {%else%}
+                            <td >{{ preke.base_price + conf.tax_rate * preke.base_price / 100}}€</td>
+                        {%endif%}
+                    {% endif %}
+
+                    {% if conf.global_discount != 0 %}
+                        {% if preke.special_price != 0 %}
+                            <td style="text-decoration: line-through">{{ preke.special_price + conf.tax_rate * preke.special_price / 100}}€</td>
+                            <td>{{ (preke.special_price + conf.tax_rate * preke.special_price / 100) - ((preke.special_price + conf.tax_rate * preke.special_price / 100) * conf.global_discount / 100)}}€</td>
+                        {%else%}
+                            <td style="text-decoration: line-through">{{ preke.base_price + conf.tax_rate * preke.base_price / 100}}€</td>
+                            <td>{{ (preke.base_price + conf.tax_rate * preke.base_price / 100) - ((preke.base_price + conf.tax_rate * preke.base_price / 100) * conf.global_discount / 100)}}€</td>
+                        {%endif%}
+                    {% endif %}
+                {% endif %}
+
+                {% if conf.tax_flag == 0 %}
+                    {% if conf.global_discount == 0 %}
+                        {% if preke.special_price != 0 %}
+                            <td> <p style="text-decoration: line-through"> {{ preke.base_price }}€ </p>{{ preke.special_price }}€</td>
+                        {%else%}
+                            <td>{{ preke.base_price }}€</td>
+                        {%endif%}
+                    {% endif %}
+
+                    {% if conf.global_discount != 0 %}
+                        {% if preke.special_price != 0 %}
+                            <td style="text-decoration: line-through">{{ preke.base_price }}€</td>
+                            <td>{{ preke.special_price - preke.special_price * conf.global_discount / 100}}€</td>
+                        {%else%}
+                            <td style="text-decoration: line-through">{{ preke.base_price }}€</td>
+                            <td>{{ preke.base_price - preke.base_price * conf.global_discount / 100}}€</td>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+
                 <td>
                     <a href="{{ path('app_prekesPlaciau', {'prekesId':preke.id}) }}" class="btn btn-success">Plačiau</a>
                     <a href="{{ path('app_prekeRedaguoti', {'prekesID':preke.id}) }}" class="btn btn-primary my-1 ">Redaguoti</a>
@@ -54,7 +100,31 @@
             <tr>
                 <td><img src="{{ preke.image }}" width="150" height="150"></td>
                 <td>{{ preke.pavadinimas }}</td>
-                <td>{{ preke.base_price }}€</td>
+
+               
+                
+                {% if conf.tax_flag == 1 %}
+                    {% if conf.global_discount == 0 %}
+                        <td >{{ preke.base_price + conf.tax_rate * preke.base_price / 100}}€</td>
+                    {% endif %}
+
+                    {% if conf.global_discount != 0 %}
+                        <td style="text-decoration: line-through">{{ preke.base_price + conf.tax_rate * preke.base_price / 100}}€</td>
+                        <td>{{ (preke.base_price + conf.tax_rate * preke.base_price / 100) - ((preke.base_price + conf.tax_rate * preke.base_price / 100) * conf.global_discount / 100)}}€</td>
+                    {% endif %}
+                {% endif %}
+
+                {% if conf.tax_flag == 0 %}
+                    {% if conf.global_discount == 0 %}
+                        <td>{{ preke.base_price }}€</td>
+                    {% endif %}
+
+                    {% if conf.global_discount != 0 %}
+                        <td style="text-decoration: line-through">{{ preke.base_price }}€</td>
+                        <td>{{ preke.base_price - preke.base_price * conf.global_discount / 100}}€</td>
+                    {% endif %}
+                {% endif %}
+                
                 <td>
                    <a href="{{ path('app_prekesPlaciau', {'prekesId':preke.id}) }}" class="btn btn-success">Plačiau</a>
                 </td>

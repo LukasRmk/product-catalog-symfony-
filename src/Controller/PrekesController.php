@@ -1,9 +1,11 @@
 <?php
 namespace App\Controller;
 use App\Entity\Preke;
+use App\Entity\review;
 use App\Entity\configuration;
 use App\Form\PrekesRedaguotiFormType;
 use App\Form\PrekesFormType;
+use App\Form\reviewFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,8 +17,11 @@ class PrekesController extends AbstractController
     public function index()
     {
         $prekes = $this->getDoctrine()->getRepository(Preke::class)->findAll();
+        $config = $this->getDoctrine()->getRepository(configuration::class)->find(0);
+
         return $this->render('prekes/prekes.html.twig', [
-        'prekes' => $prekes
+        'prekes' => $prekes,
+        'conf' => $config,
         ]);
     }
     /**
@@ -103,6 +108,7 @@ class PrekesController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $preke = $this->getDoctrine()->getRepository(Preke::class)->find($prekesId);
+        $review = $this->getDoctrine()->getRepository(review::class)->findReview($prekesId);
         $config = $this->getDoctrine()->getRepository(configuration::class)->find(0);
 
         $entityManager = $this->getDoctrine()->getManager();
@@ -113,6 +119,7 @@ class PrekesController extends AbstractController
         return $this->render('prekes/profilis.html.twig', [
             'prekee' => $preke,
             'conf' => $config,
+            'reviews' => $review,
         ]);
     }
    

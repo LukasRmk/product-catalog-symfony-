@@ -20,6 +20,7 @@ class configFormType extends AbstractType
                 'label' => 'Tax rate'
             ])
             ->add('tax_flag', CheckboxType::class, [
+                'required' => false,
                 'label' => 'Tax inclusion'
             ])
             ->add('global_discount', NumberType::class,[
