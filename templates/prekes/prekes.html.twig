@@ -3,18 +3,90 @@
 {% block title %}Prekių katalogas{% endblock %}
 
 {% block body %}
-
+    
    {% if is_granted('ROLE_ADMIN') %}
         <h1>Prekių sąrašas:</h1>
-        <div id="btnContainer">
-            <button class="btn" onclick="listView()"><i class="fa fa-bars"></i> List</button> 
-            <button class="btn active" onclick="gridView()"><i class="fa fa-th-large"></i> Grid</button>
-        </div>
+        <a href="{{ path('app_prekesDidejimo') }}" class="btn active">Rikiuoti didėjimo tvarka</a>
+        <a href="{{ path('app_prekesMazejimo') }}" class="btn active">Rikiuoti mažėjimo tvarka</a>
         <a href="{{ path('app_prekePrideti') }}" class="btn btn-primary my-1 float-right">Pridėti prekę</a>
 
         <table class="table">
             <tr>
                 <th>Paveikslėlis</th>
+                <th>Pavadinimas</th>
+                {% if conf.global_discount != 0 %}
+                    <th>Sena kaina</th>
+                    <th>Išpardavimo kaina</th>
+                {% else %}    
+                    <th>Kaina</th>
+                {% endif %}
+                <th>Veiksmai</th>
+            </tr>
+            <tr>
+                {% for preke in prekes %}
+            <tr>
+                <td><img src="{{ preke.image }}" width="150" height="150"></td>
+                <td>{{ preke.pavadinimas }}</td>
+
+
+                {% if conf.tax_flag == 1 %}
+                    {% if conf.global_discount == 0 %}
+                        {% if preke.special_price != 0 %}
+                            <td ><p style="text-decoration: line-through"> {{ preke.base_price + conf.tax_rate * preke.base_price / 100 }}€ </p>{{ preke.special_price + conf.tax_rate * preke.special_price / 100}}€</td>
+                        {%else%}
+                            <td >{{ preke.base_price + conf.tax_rate * preke.base_price / 100}}€</td>
+                        {%endif%}
+                    {% endif %}
+
+                    {% if conf.global_discount != 0 %}
+                        {% if preke.special_price != 0 %}
+                            <td style="text-decoration: line-through">{{ preke.special_price + conf.tax_rate * preke.special_price / 100}}€</td>
+                            <td>{{ (preke.special_price + conf.tax_rate * preke.special_price / 100) - ((preke.special_price + conf.tax_rate * preke.special_price / 100) * conf.global_discount / 100)}}€</td>
+                        {%else%}
+                            <td style="text-decoration: line-through">{{ preke.base_price + conf.tax_rate * preke.base_price / 100}}€</td>
+                            <td>{{ (preke.base_price + conf.tax_rate * preke.base_price / 100) - ((preke.base_price + conf.tax_rate * preke.base_price / 100) * conf.global_discount / 100)}}€</td>
+                        {%endif%}
+                    {% endif %}
+                {% endif %}
+
+                {% if conf.tax_flag == 0 %}
+                    {% if conf.global_discount == 0 %}
+                        {% if preke.special_price != 0 %}
+                            <td> <p style="text-decoration: line-through"> {{ preke.base_price }}€ </p>{{ preke.special_price }}€</td>
+                        {%else%}
+                            <td>{{ preke.base_price }}€ (Be PVM)</td>
+                        {%endif%}
+                    {% endif %}
+
+                    {% if conf.global_discount != 0 %}
+                        {% if preke.special_price != 0 %}
+                            <td style="text-decoration: line-through">{{ preke.base_price }}€</td>
+                            <td>{{ preke.special_price - preke.special_price * conf.global_discount / 100}}€ (Be PVM)</td>
+                        {%else%}
+                            <td style="text-decoration: line-through">{{ preke.base_price }}€</td>
+                            <td>{{ preke.base_price - preke.base_price * conf.global_discount / 100}}€ (Be PVM)</td>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+
+                <td>
+                    <a href="{{ path('app_prekesPlaciau', {'prekesId':preke.id}) }}" class="btn btn-success">Plačiau</a>
+                    <a href="{{ path('app_prekeRedaguoti', {'prekesID':preke.id}) }}" class="btn btn-primary my-1 ">Redaguoti</a>
+                    <a href="{{ path('app_prekesIstrinti', {'prekesID':preke.id}) }}" class="btn btn-danger js-delete-btn">Ištrinti</a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tr>
+        </table>
+    {% endif %}
+
+    {% if is_granted('ROLE_KLIENTAS') %}
+        <h1>Prekių sąrašas:</h1>
+        <a href="{{ path('app_prekesDidejimo') }}" class="btn active">Rikiuoti didėjimo tvarka</a>
+        <a href="{{ path('app_prekesMazejimo') }}" class="btn active">Rikiuoti mažėjimo tvarka</a>
+        <table class="table">
+        <tr>
+               <th>Paveikslėlis</th>
                 <th>Pavadinimas</th>
                 {% if conf.global_discount != 0 %}
                     <th>Sena kaina</th>
@@ -68,60 +140,6 @@
                             <td style="text-decoration: line-through">{{ preke.base_price }}€</td>
                             <td>{{ preke.base_price - preke.base_price * conf.global_discount / 100}}€</td>
                         {% endif %}
-                    {% endif %}
-                {% endif %}
-
-                <td>
-                    <a href="{{ path('app_prekesPlaciau', {'prekesId':preke.id}) }}" class="btn btn-success">Plačiau</a>
-                    <a href="{{ path('app_prekeRedaguoti', {'prekesID':preke.id}) }}" class="btn btn-primary my-1 ">Redaguoti</a>
-                    <a href="{{ path('app_prekesIstrinti', {'prekesID':preke.id}) }}" class="btn btn-danger js-delete-btn">Ištrinti</a>
-                </td>
-            </tr>
-            {% endfor %}
-            </tr>
-        </table>
-    {% endif %}
-
-    {% if is_granted('ROLE_KLIENTAS') %}
-        <h1>Prekių sąrašas:</h1>
-        <div id="btnContainer">
-             <button class="btn" onclick="listView()"><i class="fa fa-bars"></i> List</button> 
-            <button class="btn active" onclick="gridView()"><i class="fa fa-th-large"></i> Grid</button>
-        </div>
-        <table class="table">
-        <tr>
-                <th>Paveikslėlis</th>
-                <th>Pavadinimas</th>
-                <th>Kaina</th>
-                <th>Veiksmai</th>
-            </tr>
-            <tr>
-                {% for preke in prekes %}
-            <tr>
-                <td><img src="{{ preke.image }}" width="150" height="150"></td>
-                <td>{{ preke.pavadinimas }}</td>
-
-               
-                
-                {% if conf.tax_flag == 1 %}
-                    {% if conf.global_discount == 0 %}
-                        <td >{{ preke.base_price + conf.tax_rate * preke.base_price / 100}}€</td>
-                    {% endif %}
-
-                    {% if conf.global_discount != 0 %}
-                        <td style="text-decoration: line-through">{{ preke.base_price + conf.tax_rate * preke.base_price / 100}}€</td>
-                        <td>{{ (preke.base_price + conf.tax_rate * preke.base_price / 100) - ((preke.base_price + conf.tax_rate * preke.base_price / 100) * conf.global_discount / 100)}}€</td>
-                    {% endif %}
-                {% endif %}
-
-                {% if conf.tax_flag == 0 %}
-                    {% if conf.global_discount == 0 %}
-                        <td>{{ preke.base_price }}€</td>
-                    {% endif %}
-
-                    {% if conf.global_discount != 0 %}
-                        <td style="text-decoration: line-through">{{ preke.base_price }}€</td>
-                        <td>{{ preke.base_price - preke.base_price * conf.global_discount / 100}}€</td>
                     {% endif %}
                 {% endif %}
                 

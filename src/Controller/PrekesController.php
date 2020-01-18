@@ -24,6 +24,35 @@ class PrekesController extends AbstractController
         'conf' => $config,
         ]);
     }
+
+    /**
+     * @Route("/prekesDid", name="app_prekesDidejimo")
+     */
+    public function index1()
+    {
+        $prekes = $this->getDoctrine()->getRepository(Preke::class)->findAllOrderedByPrice();
+        $config = $this->getDoctrine()->getRepository(configuration::class)->find(0);
+
+        return $this->render('prekes/prekes.html.twig', [
+        'prekes' => $prekes,
+        'conf' => $config,
+        ]);
+    }
+
+    /**
+     * @Route("/prekesMaz", name="app_prekesMazejimo")
+     */
+    public function index2()
+    {
+        $prekes = $this->getDoctrine()->getRepository(Preke::class)->findAllOrderedByPriceDesc();
+        $config = $this->getDoctrine()->getRepository(configuration::class)->find(0);
+
+        return $this->render('prekes/prekes.html.twig', [
+        'prekes' => $prekes,
+        'conf' => $config,
+        ]);
+    }
+
     /**
      * @Route("/prekes/prideti", name="app_prekePrideti")
      */
@@ -114,12 +143,31 @@ class PrekesController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $conn = $this->getDoctrine()->getManager()->getConnection();
 
+        $sql = "SELECT Count(*) as kiek FROM review WHERE product_id = '$prekesId'";
+        $sqli = "SELECT sum(rate) as ivert FROM review WHERE product_id = '$prekesId'";
 
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $row = $stmt->fetch();
+        $kiekis = $row['kiek'];
+
+        $stmti = $conn->prepare($sqli);
+        $stmti->execute();
+        $rowi = $stmti->fetch();
+        if($kiekis != 0)
+        {
+            $avg = $rowi['ivert'] / $kiekis;
+        }
+        else{
+            $avg = 0;
+        }
 
         return $this->render('prekes/profilis.html.twig', [
             'prekee' => $preke,
             'conf' => $config,
             'reviews' => $review,
+            'kiekis' => $kiekis,
+            'vidurk' => $avg,
         ]);
     }
    

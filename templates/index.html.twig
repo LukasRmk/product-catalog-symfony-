@@ -4,6 +4,12 @@
 
 {% block body %}
 <h4>Sveiki, jūs įsijungėtė Luko Rimkaus adeoweb Back-end užduotį.</h4>
-
-<br/>
+<br>
+{% if app.user %}
+        <div class="mb-3">
+            <h5>
+                Jūs esate prisijungęs el. paštu {{ app.user.email }}
+            </h5>
+        </div>
+    {% endif %}
 {% endblock %}

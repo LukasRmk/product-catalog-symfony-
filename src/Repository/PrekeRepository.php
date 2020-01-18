@@ -27,6 +27,15 @@ class PrekeRepository extends EntityRepository
             ->getResult();
     }
 
+    public function findAllOrderedByPriceDesc()
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                'SELECT p FROM App:Preke p ORDER BY p.base_price DESC'
+            )
+            ->getResult();
+    }
+
     // /**
     //  * @return Preke[] Returns an array of Preke objects
     //  */
