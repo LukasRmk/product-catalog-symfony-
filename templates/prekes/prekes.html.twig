@@ -52,7 +52,7 @@
                 {% if conf.tax_flag == 0 %}
                     {% if conf.global_discount == 0 %}
                         {% if preke.special_price != 0 %}
-                            <td> <p style="text-decoration: line-through"> {{ preke.base_price }}€ </p>{{ preke.special_price }}€</td>
+                            <td> <p style="text-decoration: line-through"> {{ preke.base_price }}€ </p>{{ preke.special_price }}€ (Be PVM)</td>
                         {%else%}
                             <td>{{ preke.base_price }}€ (Be PVM)</td>
                         {%endif%}
@@ -126,19 +126,19 @@
                 {% if conf.tax_flag == 0 %}
                     {% if conf.global_discount == 0 %}
                         {% if preke.special_price != 0 %}
-                            <td> <p style="text-decoration: line-through"> {{ preke.base_price }}€ </p>{{ preke.special_price }}€</td>
+                            <td> <p style="text-decoration: line-through"> {{ preke.base_price }}€ </p>{{ preke.special_price }}€ (Be PVM)</td>
                         {%else%}
-                            <td>{{ preke.base_price }}€</td>
+                            <td>{{ preke.base_price }}€ (Be PVM)</td>
                         {%endif%}
                     {% endif %}
 
                     {% if conf.global_discount != 0 %}
                         {% if preke.special_price != 0 %}
                             <td style="text-decoration: line-through">{{ preke.base_price }}€</td>
-                            <td>{{ preke.special_price - preke.special_price * conf.global_discount / 100}}€</td>
+                            <td>{{ preke.special_price - preke.special_price * conf.global_discount / 100}}€ (Be PVM)</td>
                         {%else%}
                             <td style="text-decoration: line-through">{{ preke.base_price }}€</td>
-                            <td>{{ preke.base_price - preke.base_price * conf.global_discount / 100}}€</td>
+                            <td>{{ preke.base_price - preke.base_price * conf.global_discount / 100}}€ (Be PVM)</td>
                         {% endif %}
                     {% endif %}
                 {% endif %}
